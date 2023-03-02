@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter , Route, Routes, NavLink } from 'react-router-dom';
 import Home from "./pages/Home";
@@ -11,11 +12,12 @@ import axios from 'axios';
 
 import logo from './logo.png';
 
-import { getToken, removeUserSession, setUserSession } from './utils/Common';
+import { getToken, removeUserSession, setUserSession, getUser} from './utils/Common';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
- 
+
+
   useEffect(() => {
     const token = getToken();
     if (!token) {
@@ -44,6 +46,8 @@ function App() {
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/">Home</NavLink>
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/login">Login</NavLink><small>(Access without token only)</small>
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+            
+  
           </div>
           <div className="content">
           <Routes>
