@@ -46,8 +46,6 @@ function App() {
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/">Home</NavLink>
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/login">Login</NavLink><small>(Access without token only)</small>
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
-            
-  
           </div>
           <div className="content">
           <Routes>

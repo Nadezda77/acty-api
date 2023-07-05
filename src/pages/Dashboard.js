@@ -106,6 +106,7 @@ const deviceDetail = (ref) => {
           <th>networkAddress</th>
           <th>ref</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
         <tbody>
@@ -116,6 +117,7 @@ const deviceDetail = (ref) => {
               <td>{device.networkAddress}</td>
               <td>{device.ref}</td>
               <td><Button type='submit' onClick={() => removeData(device.ref)}>delete</Button></td>
+              <td><Button type='submit' onClick={() => deviceDetail(device.ref)}>view</Button></td>
             </tr>
             ))}
         </tbody>
