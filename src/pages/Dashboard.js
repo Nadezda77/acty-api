@@ -1,9 +1,9 @@
 import React, {useEffect, useState } from 'react';
-import { Container, Button, Table,  Card, CardBody, CardTitle} from 'reactstrap';
+import { Container, Button, Table,  Card, Row, Col} from 'reactstrap';
 
 import { useNavigate } from 'react-router-dom';
 import { getUser, getToken, removeUserSession } from '../utils/Common';
-//import { useForm } from "react-hook-form";
+
 import axios from 'axios';
 
 import NewDev from "./NewDevice";
@@ -16,12 +16,10 @@ const Dashboard = props => {
   // handle click event of logout button
   const handleLogout = () => {
     removeUserSession();
-   history('/login');
+    history('/login');
  }
  
   const [device, setDevice] = useState([]);
-
-
   const [isShown, setIsShown] = useState(false);
 
   const handleClick = event => {
@@ -43,57 +41,104 @@ const Dashboard = props => {
       setDevice(res.data);
 
       //console.log(res.data);
-      return res.data;
-     
+      return res.data;  
     })
     .catch((error) => {
       console.error(error)
     })
     ;
+
   }, []);
+
+
+  const removeData = (ref) => {
+
+    axios.delete(`https://dx-api.mts.rs/core/latest/api/devices/${ref}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+    
+    );
+
+      setDevice(
+        device.filter((key) => {
+          return key.ref !== ref;
+       })
+      );
+  };
+
+
+  const [selectedRow, setSelectedRow] = React.useState(-1);
+
+const deviceDetail = (ref) => {
+
+  axios.get(`https://dx-api.mts.rs/core/latest/api/devices/${ref}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }
+  
+  );
+
+    setDevice(
+      device.filter((key) => {
+        return key.ref !== ref;
+     })
+    );
+};
 
 
 
   return (
-    <Container>
+  <Container>
      Welcome {user.user}!<br /><br />
       <Button onClick={handleLogout} value="Logout">Logout</Button><br /><br />
-  <Container>
-    <Table hover>
+<Row>
+  <Col>
+    <Table hover="true">
       <thead>
         <tr>
-          <th>DevEUI</th>
           <th>name</th>
+          <th>DevEUI</th>
           <th>networkAddress</th>
           <th>ref</th>
+          <th></th>
         </tr>
       </thead>
         <tbody>
           {device.map((device, key)=> (
-            <tr key={key}>
-              <td>{device.EUI}</td>
+            <tr key={key} onClick={() =>  setSelectedRow(device.ref)}>
               <td>{device.name}</td>
+              <td>{device.EUI}</td>
               <td>{device.networkAddress}</td>
               <td>{device.ref}</td>
+              <td><Button type='submit' onClick={() => removeData(device.ref)}>delete</Button></td>
             </tr>
             ))}
         </tbody>
       <tfoot></tfoot>
     </Table>
-  </Container> 
-<Card
-  style={{
-    width: '18rem'
-  }}>
-<CardBody>
-  <CardTitle  onClick={handleClick} tag="h5">
+    </Col>
+    <Col></Col>
+    <Col>
+<Card 
+style={{
+  width: '18rem'
+}}>
+
+  <Button  hover onClick={handleClick} tag="h5">
       Create device
-  </CardTitle>
-</CardBody>
+  </Button>
+
 </Card>
 
       {isShown && <NewDev/>}
-        </Container>
+</Col>
+</Row>
+</Container>
   );
 }
 export default Dashboard;

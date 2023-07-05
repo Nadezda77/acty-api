@@ -1,18 +1,14 @@
 import React, {useEffect, useState } from 'react';
-import {  Button, Input, Label} from 'reactstrap';
-
+import { Form, FormGroup, Button, Input, Label} from 'reactstrap';
 //import { useForm } from "react-hook-form";
 import axios from 'axios';
-
 import { getUser, getToken, removeUserSession } from '../utils/Common';
 
 
 
 export default function NewDev ()  {
     // get functions to build form with useForm() hook
-
-    
-    const token = getToken();
+  const token = getToken();
 
   const [name, setName] = useState('');
   const [EUI, setEUI] = useState('');
@@ -25,11 +21,52 @@ export default function NewDev ()  {
   const [connectivityPlanId, setConnectivityPlanId] = useState('');
 
 
+  const [cPlanIds, setCPlanIds] = useState([]);
+  //const [rPlanIds, setRPlanIds] = useState([]);
+
+
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [data, setData] = useState(null);
 
 
+  useEffect(() => {
+
+    axios.get("https://dx-api.mts.rs/core/latest/api/connectivityPlans", {
+      headers: {  
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      
+      }
+      }).then(res=> {
+      setCPlanIds(res.data)
+      //return res.data;  
+   // })
+    //.catch((error) => {
+     // console.error(error)
+    });
+      }, []);
+  
+
+  // useEffect(() => {
+
+  //   axios.get("https://dx-api.mts.rs/core/latest/api/routingProfiles", {
+  //     headers: {  
+  //       'Authorization': `Bearer ${token}`,
+  //       'Content-Type': 'application/json',
+  //       'Accept': 'application/json',
+           
+  //     }
+  //     }).then(res=> {
+  //     setRPlanIds(res.data)
+  //         //return res.data;  
+  //      // })
+  //       //.catch((error) => {
+  //        // console.error(error)
+  //   });
+  //     }, []);
+      
 
 
 
@@ -38,6 +75,7 @@ export default function NewDev ()  {
   {
    setLoading(true);
    setIsError(false);
+
     const data = {
         name :name,
         EUI: EUI,
@@ -48,7 +86,7 @@ export default function NewDev ()  {
         connectivity: connectivity, 
         routingProfileId:routingProfileId, 
         connectivityPlanId: connectivityPlanId
-  }
+        }
   
   axios.post("https://dx-api.mts.rs/core/latest/api/devices", data, {
   headers: {  
@@ -68,16 +106,17 @@ export default function NewDev ()  {
             }).catch(error => {
 
               setLoading(false);
-              setIsError(true);
-              
+              setIsError(true);    
     });
 }
 
 return(
 
-    <div classNames="form-group">
+<Form  style={{
+      width: '18rem'
+    }}>
 
-<div className="form-control">
+
   <Label>name</Label>
     <Input type="text" 
            id="name"
@@ -85,86 +124,98 @@ return(
             value={name}
             onChange={e => setName(e.target.value)} 
             required="Required"/>
-</div>
-<div className="form-control">
+
+
   <Label>EUI</Label>
     <Input type="text" id="EUI" 
     placeholder="EUI"
     value={EUI}
     onChange={e => setEUI(e.target.value)} 
     required="Required" />
-</div>
+
   
-<div className="form-control">
+<FormGroup>
   <Label>activationType</Label>
-    <Input type="text" id="activationType" 
+    <Input type="select" id="activationType" 
     placeholder="activationType"
     value={activationType}
     onChange={e => setActivationType(e.target.value)} 
-    required="Required" />
-  </div>
+    required="Required">
+      <option>
+        OTAA
+      </option>
+      <option>
+        ABP
+      </option>
+    </Input>
+  </FormGroup>
 
-<div className="form-control">
   <Label>deviceProfileId</Label>
     <Input type="text" id="deviceProfileId" 
     value={deviceProfileId}
     onChange={e => setDeviceProfileId(e.target.value)} 
-    required="Required" />
-  </div>
-
-<div className="form-control">
+    required="Required" >
+     {/* <option>
+     LORA/GenericA.1_ETSI_Rx2-SF12
+     </option> */}
+     </Input>
   <Label>applicationEUI</Label>
     <Input type="text" id="applicationEUI" 
     value={applicationEUI}
     onChange={e => setApplicationEUI(e.target.value)} 
-    required="Required"  
-    />
-</div>
+    required="Required" />
 
-<div className="form-control">
+
   <Label>applicationKey</Label>
     <Input type="text" id="applicationKey" 
     value={applicationKey}
     onChange={e => setApplicationKey(e.target.value)} 
-    required="Required" 
-    
-    />
-</div>
+    required="Required"/>
 
-<div className="form-control">
+
   <Label>connectivity</Label>
-    <Input type="text" id="connectivity" 
+    <Input type="select" id="connectivity" 
      value={connectivity}
      onChange={e => setConnectivity(e.target.value)} 
-     required="Required"
-    
-    />
-</div>
+     required="Required">
+      <option>
+      LORAWAN
+      </option>
+    </Input>
 
-<div className="form-control">
   <Label>routingProfileId</Label>
     <Input type="text" id="routingProfileId" 
      value={routingProfileId}
      onChange={e => setRoutingProfileId(e.target.value)} 
-     required="Required"
-    />
-</div>
+     required="Required">
+       {/* {rPlanIds.map(rPlanId => (
+            <option key={rPlanId.id} value={rPlanId.id}>
+              {rPlanId.id}
+            </option>
+          ))}   */}
+       <option>
+        TWA_1100000048.202
+      </option> 
+       </Input> 
 
-<div className="form-control">
   <Label>connectivityPlanId</Label>
     <Input type="text" id="connectivityPlanId"
     value={connectivityPlanId}
     onChange={e => setConnectivityPlanId(e.target.value)} 
-    required="Required"
-    
-    />
-</div>
+    required="Required">
 
-<div className="form-control">
+{cPlanIds.map(cPlanId => (
+            <option key={cPlanId.id} value={cPlanId.id}>
+              {cPlanId.id}
+            </option>
+))}
+
+</Input>
+
   <Label></Label>
     <Button  color="primary" type="submit"   onClick={handleSubmit} >New device</Button>
-</div>
-</div>
+
+</Form>
 );
 }
 
