@@ -21,6 +21,17 @@ const Dashboard = props => {
  
   const [device, setDevice] = useState([]);
 
+
+  const [isShown, setIsShown] = useState(false);
+
+  const handleClick = event => {
+    // 👇️ toggle shown state
+    setIsShown(current => !current);
+
+    // 👇️ or simply set it to true
+    // setIsShown(true);
+  };
+
   useEffect(() => {
    
     axios.get('https://dx-api.mts.rs/core/latest/api/devices', {
@@ -41,9 +52,6 @@ const Dashboard = props => {
     ;
   }, []);
 
-
-
- 
 
 
   return (
@@ -73,18 +81,18 @@ const Dashboard = props => {
       <tfoot></tfoot>
     </Table>
   </Container> 
-  <Card
+<Card
   style={{
     width: '18rem'
   }}>
 <CardBody>
-  <CardTitle tag="h5">
+  <CardTitle  onClick={handleClick} tag="h5">
       Create device
   </CardTitle>
-          </CardBody>
-       </Card>
+</CardBody>
+</Card>
 
-       <NewDev/>
+      {isShown && <NewDev/>}
         </Container>
   );
 }
