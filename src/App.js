@@ -12,7 +12,7 @@ import axios from 'axios';
 
 import logo from './logo.png';
 
-import { getToken, removeUserSession, setUserSession, getUser} from './utils/Common';
+import { getToken, removeUserSession, setUserSession} from './utils/Common';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -20,6 +20,7 @@ function App() {
 
   useEffect(() => {
     const token = getToken();
+   
     if (!token) {
       return;
     }

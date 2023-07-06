@@ -90,8 +90,6 @@ const deviceDetail = (ref) => {
     );
 };
 
-
-
   return (
   <Container>
      Welcome {user.user}!<br /><br />
