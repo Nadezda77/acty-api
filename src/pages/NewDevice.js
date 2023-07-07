@@ -1,9 +1,11 @@
 import React, {useEffect, useState } from 'react';
 import { Form, FormGroup, Button, Input, Label} from 'reactstrap';
-//import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { getUser, getToken, removeUserSession } from '../utils/Common';
-
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import Select from 'react-select';
 
 
 export default function NewDev ()  {
@@ -40,7 +42,7 @@ export default function NewDev ()  {
       
       }
       }).then(res=> {
-      setCPlanIds(res.data)
+      setCPlanIds(res.cp)
       //return res.data;  
    // })
     //.catch((error) => {
