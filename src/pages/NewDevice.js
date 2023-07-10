@@ -24,7 +24,7 @@ export default function NewDev ()  {
 
 
   const [cPlanIds, setCPlanIds] = useState([]);
-  const [rPlanIds, setRPlanIds] = useState([]);
+  const [rProfId, setRProfId] = useState([]);
 
 
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ export default function NewDev ()  {
            
       }
       }).then(res=> {
-      setRPlanIds(res.rp)
+      setRProfId(res.rp)
           return res.rp;  
        })
         .catch((error) => {
@@ -194,14 +194,21 @@ return(
      value={routingProfileId}
      onChange={e => setRoutingProfileId(e.target.value)} 
      required="Required">
-       {/* {rPlanIds.map(rPlanId => (
-            <option key={rPlanId.id} value={rPlanId.id}>
-              {rPlanId.id}
+      
+      {!rProfId ? (
+    <>Loading data...</>
+  ) : rProfId.length === 0 ? (
+    <>No data found</>
+  ) : (
+    rProfId.map(({ label, value }) => (
+
+            <option key={rProfId.id} value={rProfId.id}>
+              {rProfId.id}
             </option>
-          ))}   */}
-       <option>
-        TWA_1100000048.202
-      </option> 
+        
+        ))
+        )}
+
        </Input> 
        </FormGroup>
        {/* <FormGroup>
