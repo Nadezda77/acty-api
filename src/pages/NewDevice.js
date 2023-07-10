@@ -62,10 +62,10 @@ export default function NewDev ()  {
       }
       }).then(res=> {
       setRPlanIds(res.rp)
-          //return res.rp;  
-       // })
-        //.catch((error) => {
-         // console.error(error)
+          return res.rp;  
+       })
+        .catch((error) => {
+          console.error(error)
     });
       }, []);
       
