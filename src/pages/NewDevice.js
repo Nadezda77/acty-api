@@ -24,7 +24,7 @@ export default function NewDev ()  {
 
 
   const [cPlanIds, setCPlanIds] = useState([]);
-  //const [rPlanIds, setRPlanIds] = useState([]);
+  const [rPlanIds, setRPlanIds] = useState([]);
 
 
   const [loading, setLoading] = useState(false);
@@ -43,31 +43,31 @@ export default function NewDev ()  {
       }
       }).then(res=> {
       setCPlanIds(res.cp)
-      //return res.data;  
-   // })
-    //.catch((error) => {
-     // console.error(error)
+      return res.cp;  
+   })
+    .catch((error) => {
+      console.error(error)
     });
       }, []);
   
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   axios.get("https://dx-api.mts.rs/core/latest/api/routingProfiles", {
-  //     headers: {  
-  //       'Authorization': `Bearer ${token}`,
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
+    axios.get("https://dx-api.mts.rs/core/latest/api/routingProfiles", {
+      headers: {  
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
            
-  //     }
-  //     }).then(res=> {
-  //     setRPlanIds(res.data)
-  //         //return res.data;  
-  //      // })
-  //       //.catch((error) => {
-  //        // console.error(error)
-  //   });
-  //     }, []);
+      }
+      }).then(res=> {
+      setRPlanIds(res.rp)
+          //return res.rp;  
+       // })
+        //.catch((error) => {
+         // console.error(error)
+    });
+      }, []);
       
 
 
@@ -118,7 +118,7 @@ return(
       width: '18rem'
     }}>
 
-
+<FormGroup>
   <Label>name</Label>
     <Input type="text" 
            id="name"
@@ -126,15 +126,15 @@ return(
             value={name}
             onChange={e => setName(e.target.value)} 
             required="Required"/>
-
-
+</FormGroup>
+<FormGroup>
   <Label>EUI</Label>
     <Input type="text" id="EUI" 
     placeholder="EUI"
     value={EUI}
     onChange={e => setEUI(e.target.value)} 
     required="Required" />
-
+</FormGroup>
   
 <FormGroup>
   <Label>activationType</Label>
@@ -152,29 +152,31 @@ return(
     </Input>
   </FormGroup>
 
+  <FormGroup>
   <Label>deviceProfileId</Label>
     <Input type="text" id="deviceProfileId" 
     value={deviceProfileId}
     onChange={e => setDeviceProfileId(e.target.value)} 
     required="Required" >
-     {/* <option>
-     LORA/GenericA.1_ETSI_Rx2-SF12
-     </option> */}
+    
      </Input>
+</FormGroup>
+
+<FormGroup>
   <Label>applicationEUI</Label>
     <Input type="text" id="applicationEUI" 
     value={applicationEUI}
     onChange={e => setApplicationEUI(e.target.value)} 
     required="Required" />
-
-
+</FormGroup>
+<FormGroup>
   <Label>applicationKey</Label>
     <Input type="text" id="applicationKey" 
     value={applicationKey}
     onChange={e => setApplicationKey(e.target.value)} 
     required="Required"/>
-
-
+</FormGroup>
+<FormGroup>
   <Label>connectivity</Label>
     <Input type="select" id="connectivity" 
      value={connectivity}
@@ -184,9 +186,11 @@ return(
       LORAWAN
       </option>
     </Input>
+    </FormGroup>
 
+    <FormGroup>
   <Label>routingProfileId</Label>
-    <Input type="text" id="routingProfileId" 
+    <Input type="select" id="routingProfileId" 
      value={routingProfileId}
      onChange={e => setRoutingProfileId(e.target.value)} 
      required="Required">
@@ -199,10 +203,11 @@ return(
         TWA_1100000048.202
       </option> 
        </Input> 
-
+       </FormGroup>
+       {/* <FormGroup>
   <Label>connectivityPlanId</Label>
-    <Input type="text" id="connectivityPlanId"
-    value={connectivityPlanId}
+    <Input type="select" id="connectivityPlanId"
+   value={connectivityPlanId}
     onChange={e => setConnectivityPlanId(e.target.value)} 
     required="Required">
 
@@ -213,6 +218,7 @@ return(
 ))}
 
 </Input>
+</FormGroup> */}
 
   <Label></Label>
     <Button  color="primary" type="submit"   onClick={handleSubmit} >New device</Button>

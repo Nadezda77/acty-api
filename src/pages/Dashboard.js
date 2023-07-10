@@ -96,7 +96,7 @@ const deviceDetail = (ref) => {
       <Button onClick={handleLogout} value="Logout">Logout</Button><br /><br />
 <Row>
   <Col>
-    <Table hover="true">
+    <Table >
       <thead>
         <tr>
           <th>name</th>
@@ -129,7 +129,7 @@ style={{
   width: '18rem'
 }}>
 
-  <Button  hover onClick={handleClick} tag="h5">
+  <Button onClick={handleClick} tag="h5">
       Create device
   </Button>
 
