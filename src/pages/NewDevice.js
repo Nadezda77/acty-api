@@ -71,23 +71,23 @@ export default function NewDev ()  {
       }, []);
       
 
-      useEffect(() => {
+      // useEffect(() => {
 
-        axios.get("https://dx-api.mts.rs/core/latest/api/deviceProfiles", {
-          headers: {  
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+      //   axios.get("https://dx-api.mts.rs/core/latest/api/deviceProfiles", {
+      //     headers: {  
+      //       'Authorization': `Bearer ${token}`,
+      //       'Content-Type': 'application/json',
+      //       'Accept': 'application/json',
                
-          }
-          }).then(res=> {
-          setDprofIds(res.data)
-              return res.data;  
-           })
-            .catch((error) => {
-              console.error(error)
-        });
-          }, []);
+      //     }
+      //     }).then(res=> {
+      //     setDprofIds(res.data)
+      //         return res.data;  
+      //      })
+      //       .catch((error) => {
+      //         console.error(error)
+      //   });
+      //     }, []);
           
 
 
@@ -179,19 +179,9 @@ return(
     onChange={e => setDeviceProfileId(e.target.value)} 
     required="Required" >
 
-{!dprofIds ? (
-    <>Loading data...</>
-  ) : dprofIds.length === 0 ? (
-    <>No data found</>
-  ) : (
-    dprofIds.map( dprofId  => (
-
-            <option key={dprofId.id}  >
-              {dprofId.name}
-            </option>
-        
-        ))
-        )}
+  <option>
+    LORA/GenericA.1.0.2a_ETSI_Rx2-SF12
+  </option>
 
 
     
@@ -239,7 +229,7 @@ return(
     rprofIds.map( rprofId  => (
 
             <option key={rprofId.id}  >
-              {rprofId.name}
+              {rprofId.id}
             </option>
         
         ))
@@ -257,7 +247,7 @@ return(
 
 {cPlanIds.map(cPlanId => (
             <option key={cPlanId.id} >
-              {cPlanId.name}
+              {cPlanId.id}
             </option>
 ))}
 
