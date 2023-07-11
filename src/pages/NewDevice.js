@@ -24,7 +24,8 @@ export default function NewDev ()  {
 
 
   const [cPlanIds, setCPlanIds] = useState([]);
-  const [rProfId, setRProfId] = useState([]);
+  const [rprofIds, setRprofIds] = useState([]);
+  const [dprofIds, setDprofIds] = useState([]);
 
 
   const [loading, setLoading] = useState(false);
@@ -42,8 +43,8 @@ export default function NewDev ()  {
       
       }
       }).then(res=> {
-      setCPlanIds(res.cp)
-      return res.cp;  
+      setCPlanIds(res.data)
+      return res.data;  
    })
     .catch((error) => {
       console.error(error)
@@ -61,14 +62,33 @@ export default function NewDev ()  {
            
       }
       }).then(res=> {
-      setRProfId(res.rp)
-          return res.rp;  
+      setRprofIds(res.data)
+          return res.data;  
        })
         .catch((error) => {
           console.error(error)
     });
       }, []);
       
+
+      useEffect(() => {
+
+        axios.get("https://dx-api.mts.rs/core/latest/api/deviceProfiles", {
+          headers: {  
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+               
+          }
+          }).then(res=> {
+          setDprofIds(res.data)
+              return res.data;  
+           })
+            .catch((error) => {
+              console.error(error)
+        });
+          }, []);
+          
 
 
 
@@ -154,10 +174,26 @@ return(
 
   <FormGroup>
   <Label>deviceProfileId</Label>
-    <Input type="text" id="deviceProfileId" 
+    <Input type="select" id="deviceProfileId" 
     value={deviceProfileId}
     onChange={e => setDeviceProfileId(e.target.value)} 
     required="Required" >
+
+{!dprofIds ? (
+    <>Loading data...</>
+  ) : dprofIds.length === 0 ? (
+    <>No data found</>
+  ) : (
+    dprofIds.map( dprofId  => (
+
+            <option key={dprofId.id}  >
+              {dprofId.name}
+            </option>
+        
+        ))
+        )}
+
+
     
      </Input>
 </FormGroup>
@@ -195,15 +231,15 @@ return(
      onChange={e => setRoutingProfileId(e.target.value)} 
      required="Required">
       
-      {!rProfId ? (
+      {!rprofIds ? (
     <>Loading data...</>
-  ) : rProfId.length === 0 ? (
+  ) : rprofIds.length === 0 ? (
     <>No data found</>
   ) : (
-    rProfId.map(({ label, value }) => (
+    rprofIds.map( rprofId  => (
 
-            <option key={rProfId.id} value={rProfId.id}>
-              {rProfId.id}
+            <option key={rprofId.id}  >
+              {rprofId.name}
             </option>
         
         ))
@@ -211,7 +247,8 @@ return(
 
        </Input> 
        </FormGroup>
-       {/* <FormGroup>
+
+       <FormGroup>
   <Label>connectivityPlanId</Label>
     <Input type="select" id="connectivityPlanId"
    value={connectivityPlanId}
@@ -219,13 +256,13 @@ return(
     required="Required">
 
 {cPlanIds.map(cPlanId => (
-            <option key={cPlanId.id} value={cPlanId.id}>
-              {cPlanId.id}
+            <option key={cPlanId.id} >
+              {cPlanId.name}
             </option>
 ))}
 
 </Input>
-</FormGroup> */}
+</FormGroup>
 
   <Label></Label>
     <Button  color="primary" type="submit"   onClick={handleSubmit} >New device</Button>
