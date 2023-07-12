@@ -6,7 +6,7 @@ import { getUser, getToken, removeUserSession } from '../utils/Common';
 
 import axios from 'axios';
 
-import NewDev from "./NewDevice";
+//import NewDev from "./NewDevice";
 
 const Dashboard = props => {
  const history = useNavigate();
@@ -20,15 +20,15 @@ const Dashboard = props => {
  }
  
   const [device, setDevice] = useState([]);
-  const [isShown, setIsShown] = useState(false);
+  //const [isShown, setIsShown] = useState(false);
 
-  const handleClick = event => {
-    // 👇️ toggle shown state
-    setIsShown(current => !current);
+  // const handleClick = event => {
+  //   // 👇️ toggle shown state
+  //   setIsShown(current => !current);
 
-    // 👇️ or simply set it to true
-    // setIsShown(true);
-  };
+  //   // 👇️ or simply set it to true
+  //   // setIsShown(true);
+  // };
 
   useEffect(() => {
    
@@ -92,10 +92,10 @@ const deviceDetail = (ref) => {
 
   return (
   <Container>
-     Welcome {user.user}!<br /><br />
+     Welcome {user.client_id}!<br /><br />
       <Button onClick={handleLogout} value="Logout">Logout</Button><br /><br />
-<Row>
-  <Col>
+
+ 
     <Table >
       <thead>
         <tr>
@@ -121,23 +121,22 @@ const deviceDetail = (ref) => {
         </tbody>
       <tfoot></tfoot>
     </Table>
-    </Col>
-    <Col></Col>
-    <Col>
-<Card 
-style={{
-  width: '18rem'
-}}>
+   
+   
+    
+                <Card 
+                style={{
+                  width: '18rem'
+                }}>
+                {/* <Button onClick={handleClick} tag="h5">
+                      Create device
+                  </Button>  */}
 
-  <Button onClick={handleClick} tag="h5">
-      Create device
-  </Button>
+                </Card>
 
-</Card>
+                 {/* {isShown && <NewDev/>}  */}
+   
 
-      {isShown && <NewDev/>}
-</Col>
-</Row>
 </Container>
   );
 }

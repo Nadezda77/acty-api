@@ -8,8 +8,17 @@ import * as yup from "yup";
 import Select from 'react-select';
 
 
-export default function NewDev ()  {
+
+
+//export default function NewDev ()  {
+
+const NewDevice = () => {
+
     // get functions to build form with useForm() hook
+
+    const { control, register, handleSubmit, formState: { isSubmitSuccessful, errors } } = useForm({
+      // progressive: true, optional prop for progressive enhancement
+    });
   const token = getToken();
 
   const [name, setName] = useState('');
@@ -33,6 +42,47 @@ export default function NewDev ()  {
   const [data, setData] = useState(null);
 
 
+  const onSubmit = async ()  => 
+ 
+  {
+   setLoading(true);
+   setIsError(false);
+
+    const data = {
+        name :name,
+        EUI: EUI,
+        activationType: activationType,
+        deviceProfileId: deviceProfileId,
+        applicationEUI: applicationEUI,
+        applicationKey: applicationKey,
+        connectivity: connectivity, 
+        routingProfileId:routingProfileId, 
+        connectivityPlanId: connectivityPlanId
+        }
+
+  axios.post("https://dx-api.mts.rs/core/latest/api/devices", data, {
+  headers: {  
+    'Authorization': `Bearer ${token}`}
+            }).then(res => {
+            setData(res.data);
+            setName('');
+            setEUI('');
+            setActivationType('');
+            setDeviceProfileId('');
+            setApplicationEUI('');
+            setApplicationKey('');
+            setConnectivity('');
+            setRoutingProfileId('');
+            setConnectivityPlanId('');
+          
+            }).catch(err => {
+
+              setLoading(false);
+              setIsError(true);    
+    });
+  }
+
+
   useEffect(() => {
 
     axios.get("https://dx-api.mts.rs/core/latest/api/connectivityPlans", {
@@ -45,6 +95,7 @@ export default function NewDev ()  {
       }).then(res=> {
       setCPlanIds(res.data)
       return res.data;  
+     
    })
     .catch((error) => {
       console.error(error)
@@ -92,77 +143,39 @@ export default function NewDev ()  {
 
 
 
-  const handleSubmit = ()  => 
- 
-  {
-   setLoading(true);
-   setIsError(false);
-
-    const data = {
-        name :name,
-        EUI: EUI,
-        activationType: activationType,
-        deviceProfileId: deviceProfileId,
-        applicationEUI: applicationEUI,
-        applicationKey: applicationKey,
-        connectivity: connectivity, 
-        routingProfileId:routingProfileId, 
-        connectivityPlanId: connectivityPlanId
-        }
   
-  axios.post("https://dx-api.mts.rs/core/latest/api/devices", data, {
-  headers: {  
-    'Authorization': `Bearer ${token}`}
-            }).then(res => {
-            setData(res.data);
-            setName('');
-            setEUI('');
-            setActivationType('');
-            setDeviceProfileId('');
-            setApplicationEUI('');
-            setApplicationKey('');
-            setConnectivity('');
-            setRoutingProfileId('');
-            setConnectivityPlanId('');
-          
-            }).catch(error => {
-
-              setLoading(false);
-              setIsError(true);    
-    });
-}
-
 return(
 
-<Form  style={{
+<Form style={{
       width: '18rem'
-    }}>
+    }} onSubmit={handleSubmit(onSubmit)}>
 
-<FormGroup>
+
   <Label>name</Label>
     <Input type="text" 
-           id="name"
-            placeholder="name"
-            value={name}
-            onChange={e => setName(e.target.value)} 
-            required="Required"/>
-</FormGroup>
-<FormGroup>
+    id="name"
+    placeholder="name"
+    value={name}
+    onChange={e => setName(e.target.value)} 
+    required="Required"/>
+
+
   <Label>EUI</Label>
     <Input type="text" id="EUI" 
     placeholder="EUI"
     value={EUI}
     onChange={e => setEUI(e.target.value)} 
     required="Required" />
-</FormGroup>
+
   
-<FormGroup>
+
   <Label>activationType</Label>
     <Input type="select" id="activationType" 
     placeholder="activationType"
     value={activationType}
     onChange={e => setActivationType(e.target.value)} 
     required="Required">
+      <option></option>
       <option>
         OTAA
       </option>
@@ -170,57 +183,53 @@ return(
         ABP
       </option>
     </Input>
-  </FormGroup>
+ 
 
-  <FormGroup>
+  
   <Label>deviceProfileId</Label>
     <Input type="select" id="deviceProfileId" 
     value={deviceProfileId}
     onChange={e => setDeviceProfileId(e.target.value)} 
     required="Required" >
-
+<option></option>
   <option>
     LORA/GenericA.1.0.2a_ETSI_Rx2-SF12
   </option>
-
-
-    
      </Input>
-</FormGroup>
 
-<FormGroup>
+
+
   <Label>applicationEUI</Label>
     <Input type="text" id="applicationEUI" 
     value={applicationEUI}
     onChange={e => setApplicationEUI(e.target.value)} 
     required="Required" />
-</FormGroup>
-<FormGroup>
+
+
   <Label>applicationKey</Label>
     <Input type="text" id="applicationKey" 
     value={applicationKey}
     onChange={e => setApplicationKey(e.target.value)} 
     required="Required"/>
-</FormGroup>
-<FormGroup>
+
   <Label>connectivity</Label>
     <Input type="select" id="connectivity" 
      value={connectivity}
      onChange={e => setConnectivity(e.target.value)} 
      required="Required">
+      <option></option>
       <option>
       LORAWAN
       </option>
     </Input>
-    </FormGroup>
+   
 
-    <FormGroup>
   <Label>routingProfileId</Label>
     <Input type="select" id="routingProfileId" 
      value={routingProfileId}
      onChange={e => setRoutingProfileId(e.target.value)} 
      required="Required">
-      
+      <option></option>
       {!rprofIds ? (
     <>Loading data...</>
   ) : rprofIds.length === 0 ? (
@@ -236,28 +245,34 @@ return(
         )}
 
        </Input> 
-       </FormGroup>
+    
 
-       <FormGroup>
   <Label>connectivityPlanId</Label>
     <Input type="select" id="connectivityPlanId"
-   value={connectivityPlanId}
-    onChange={e => setConnectivityPlanId(e.target.value)} 
-    required="Required">
+        value={connectivityPlanId}
+        onChange={e => setConnectivityPlanId(e.target.value)} 
+        required="Required">
+          <option></option>
+        {!cPlanIds ? (
+            <>Loading data...</>
+          ) : cPlanIds.length === 0 ? (
+            <>No data found</>
+          ) : (
 
-{cPlanIds.map(cPlanId => (
-            <option key={cPlanId.id} >
-              {cPlanId.id}
-            </option>
-))}
-
-</Input>
-</FormGroup>
-
-  <Label></Label>
-    <Button  color="primary" type="submit"   onClick={handleSubmit} >New device</Button>
-
+        cPlanIds.map(cPlanId => (
+          <option key={cPlanId.id} >
+          {cPlanId.id}
+          </option>
+        ))
+        )}
+    </Input>
+ 
+    <Button  color="primary" type="submit"  >New device</Button>
+    {isSubmitSuccessful && <p>Form submit successful.</p>}
+      
+      {errors?.root?.server && <p>Form submit failed.</p>}
 </Form>
 );
 }
 
+export default NewDevice;

@@ -5,6 +5,8 @@ import { BrowserRouter , Route, Routes, NavLink } from 'react-router-dom';
 import Home from "./pages/Home";
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import NewDevice from './pages/NewDevice';
+
 import NotFound from './pages/NotFound';
 import PrivateRoute from './utils/PrivateRoute';
 import PublicRoute from './utils/PublicRoute';
@@ -47,6 +49,7 @@ function App() {
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/">Home</NavLink>
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/login">Login</NavLink><small>(Access without token only)</small>
             <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+            <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/new_device">New device</NavLink><small>(Access with token only)</small>
           </div>
           <div className="content">
           <Routes>
@@ -56,7 +59,9 @@ function App() {
               <Route path="/login" element={<Login />} />
             </Route>
             <Route element={<PrivateRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
+               <Route path="/dashboard" element={<Dashboard />} /> 
+
+              <Route path="/new_device" element={<NewDevice />} />
             </Route>
           </Routes>
           </div>
