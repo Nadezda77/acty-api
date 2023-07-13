@@ -150,6 +150,9 @@ return(
       width: '18rem'
     }} onSubmit={handleSubmit(onSubmit)}>
 
+{isSubmitSuccessful && <p>Form submit successful.</p>}
+      
+      {errors?.root?.server && <p>Form submit failed.</p>}
 
   <Label>name</Label>
     <Input type="text" 
@@ -188,6 +191,7 @@ return(
   
   <Label>deviceProfileId</Label>
     <Input type="select" id="deviceProfileId" 
+    placeholder="deviceProfileId"
     value={deviceProfileId}
     onChange={e => setDeviceProfileId(e.target.value)} 
     required="Required" >
@@ -201,6 +205,7 @@ return(
 
   <Label>applicationEUI</Label>
     <Input type="text" id="applicationEUI" 
+    placeholder="applicationEUI"
     value={applicationEUI}
     onChange={e => setApplicationEUI(e.target.value)} 
     required="Required" />
@@ -208,12 +213,14 @@ return(
 
   <Label>applicationKey</Label>
     <Input type="text" id="applicationKey" 
+    placeholder="applicationKey" 
     value={applicationKey}
     onChange={e => setApplicationKey(e.target.value)} 
     required="Required"/>
 
   <Label>connectivity</Label>
     <Input type="select" id="connectivity" 
+    placeholder="connectivity"
      value={connectivity}
      onChange={e => setConnectivity(e.target.value)} 
      required="Required">
@@ -226,6 +233,7 @@ return(
 
   <Label>routingProfileId</Label>
     <Input type="select" id="routingProfileId" 
+    placeholder="routingProfileId"
      value={routingProfileId}
      onChange={e => setRoutingProfileId(e.target.value)} 
      required="Required">
@@ -243,12 +251,12 @@ return(
         
         ))
         )}
-
-       </Input> 
+    </Input> 
     
 
   <Label>connectivityPlanId</Label>
     <Input type="select" id="connectivityPlanId"
+    placeholder="connectivityPlanId"
         value={connectivityPlanId}
         onChange={e => setConnectivityPlanId(e.target.value)} 
         required="Required">
@@ -268,10 +276,9 @@ return(
     </Input>
  
     <Button  color="primary" type="submit"  >New device</Button>
-    {isSubmitSuccessful && <p>Form submit successful.</p>}
-      
-      {errors?.root?.server && <p>Form submit failed.</p>}
+  
 </Form>
+
 );
 }
 
