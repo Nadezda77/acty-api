@@ -9,9 +9,9 @@ import axios from 'axios';
 //import NewDev from "./NewDevice";
 
 const Dashboard = props => {
- const history = useNavigate();
- const user = getUser();
-  const token = getToken();
+const history = useNavigate();
+const user = getUser();
+const token = getToken();
  
   // handle click event of logout button
   const handleLogout = () => {
@@ -19,7 +19,7 @@ const Dashboard = props => {
     history('/login');
  }
  
-  const [device, setDevice] = useState([]);
+const [device, setDevice] = useState([]);
   //const [isShown, setIsShown] = useState(false);
 
   // const handleClick = event => {
@@ -34,7 +34,11 @@ const Dashboard = props => {
    
     axios.get('https://dx-api.mts.rs/core/latest/api/devices', {
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type' : 'application/x-www-form-urlencoded',
+       // "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods":"DELETE, POST, GET, OPTIONS",
+        //"Access-Control-Allow-Headers":"Content-Type, Authorization, X-Requested-With"
       }
     }).then(res => {
 
